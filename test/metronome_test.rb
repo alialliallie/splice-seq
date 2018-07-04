@@ -6,7 +6,7 @@ describe Metronome do
     before = Time.now
     metronome.beat
     after = Time.now
-    # Millisecond precision is fine
-    (after - before).must_be_within_epsilon(1, 0.001)
+    # centisecond precision is fine
+    (after - before).must_be_within_epsilon(1, 0.01)
   end
 end
