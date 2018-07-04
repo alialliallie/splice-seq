@@ -29,7 +29,12 @@ class Sequencer
   end
 
   def format_beat(counter, beat)
-    c = (counter % 4) + 1
+    quarter = (counter % 4)
+    c = if quarter.zero?
+          ((counter / 4) % 4) + 1
+        else
+          ' '
+        end
     # This is kind of hard-coded because we only support 4/4
     "#{c}  #{beat.join('| ')}"
   end
