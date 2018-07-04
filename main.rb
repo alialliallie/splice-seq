@@ -2,14 +2,28 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/lib')
 
 require 'sequencer'
+require 'optparse'
 
-high_hat   = Track.new('--x---x---x---x-')
-snare_drum = Track.new('----x-------x---')
-bass_drum  = Track.new('x---x---x---x---')
+options = { bpm: 120 }
+optparse = OptionParser.new do |opts|
+  opts.banner = 'Usage: main.rb [options] track1 track2 ...'
+  opts.on('--bpm=MANDATORY', 'Beats per minute (default 120)') do |bpm|
+    options[:bpm] = bpm.to_i
+  end
+end
 
-seq = Sequencer.new(60,
-                    'BD' => bass_drum,
-                    'SD' => snare_drum,
-                    'HH' => high_hat)
+optparse.parse!
 
-seq.run
+seq = Sequencer.new(options[:bpm])
+
+ARGV.each do |track|
+  name, spec = track.split('=')
+  seq.add_track(name, Track.new(spec))
+end
+
+begin
+  puts "3... 2... 1... let's jam!\n\n"
+  seq.run
+rescue Interrupt
+  puts "\nAnd done!"
+end
