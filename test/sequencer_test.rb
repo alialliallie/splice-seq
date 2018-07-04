@@ -26,6 +26,6 @@ describe Sequencer do
   it 'prints beats nicely' do
     counter, interesting_beat = sequencer.take(5).last
     out = sequencer.format_beat(counter, interesting_beat)
-    out.must_equal ' 1  x| x|  '
+    out.must_equal '1  x| x|  '
   end
 end

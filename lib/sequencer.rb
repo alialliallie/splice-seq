@@ -6,8 +6,16 @@ class Sequencer
   include Enumerable
 
   def initialize(bpm = 60, tracks = {})
-    @bpm = bpm
+    @metronome = Metronome.new(bpm)
     @tracks = tracks
+  end
+
+  def run
+    puts header
+    each do |counter, beat|
+      puts format_beat(counter, beat)
+      @metronome.beat
+    end
   end
 
   # Add a track to the sequencer
@@ -17,13 +25,13 @@ class Sequencer
   end
 
   def header
-    ' ' + @tracks.keys.join(' ')
+    '  ' + @tracks.keys.join(' ')
   end
 
   def format_beat(counter, beat)
     c = (counter % 4) + 1
     # This is kind of hard-coded because we only support 4/4
-    " #{c}  #{beat.join('| ')}"
+    "#{c}  #{beat.join('| ')}"
   end
 
   def each(&block)
